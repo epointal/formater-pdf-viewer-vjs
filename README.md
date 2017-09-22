@@ -28,7 +28,3 @@ npm install
   <formater-pdf-viewer src="url/file.pdf" lang="fr"></formater-pdf-viewer>
   <script type="text/javascript" src="/dist/formater-pdf-viewer-vjs_0.1.0.js"/>
 
-
-## Credits
-[<img src="https://www.franck-freiburger.com/FF.png" width="16"> Franck Freiburger](https://www.franck-freiburger.com)
-
