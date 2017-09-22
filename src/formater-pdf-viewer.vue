@@ -16,36 +16,35 @@
               <div class="toolbarViewerLeft">
                 <!--  <div class="toolbarButtonSpacer"></div>-->
                 <div class="splitToolbarButton hiddenSmallView">
-                  <button class="toolbarButton pageUp" data-i18n="[title]PreviousPage" @click="page -=1" :disabled="page <=1">
+                  <button class="toolbarButton pageUp" @click="page -=1" :disabled="page <=1">
                     <span >Previous</span>
                   </button>
-                  <!--  <div class="splitToolbarButtonSeparator"></div>-->
                   <button class="toolbarButton pageDown" title="Page suivante" @click="page +=1" :disabled="page >= numPages">
                     <span data-l10n-id="next_label">Next</span>
                   </button>
                 </div>
-                <input id="pageNumber" class="toolbarField pageNumber" title="Page" v-model="page" size="4" min="1"  :max="numPages" type="number" >
-                <span id="numPages" class="toolbarLabel">sur {{numPages}}</span>
+                <input class="toolbarField pageNumber" title="Page" v-model="page" size="4" min="1"  :max="numPages" type="number" >
+                <span  class="toolbarLabel">sur {{numPages}}</span>
               </div>
               <div class="toolbarViewerRight">
-                <a  class="toolbarButton presentationMode" title="Basculer en mode présentation" tabindex="31" :href="src">
-                  <span >Mode présentation</span>
+                <a  class="toolbarButton presentationMode" title="Voir en plein écran" :href="src">
+                  <span >Plein Ecran</span>
                 </a>
-                <button  class="toolbarButton print hiddenMediumView" title="Imprimer" tabindex="33" >
-                  <span data-l10n-id="print_label">Imprimer</span>
+                <button  class="toolbarButton print hiddenMediumView" title="Imprimer" >
+                  <span >Imprimer</span>
                 </button>
                 <a  class="toolbarButton download hiddenMediumView" title="Télécharger" :href="src" download>
-                  <span data-l10n-id="download_label">Télécharger</span>
+                  <span>Télécharger</span>
                 </a>
               </div>
               <div class="toolbarViewerMiddle">
                 <div class="splitToolbarButton">
                   <button  class="toolbarButton zoomOut" title="Zoom arrière" @click="zoomOut" >
-                    <span data-l10n-id="zoom_out_label">Zoom arrière</span>
+                    <span >Zoom arrière</span>
                   </button>
                  <!--  <div class="splitToolbarButtonSeparator"></div>--> 
                   <button  class="toolbarButton zoomIn" title="Zoom avant" @click="zoomIn" >
-                    <span data-l10n-id="zoom_in_label">Zoom avant</span>
+                    <span >Zoom avant</span>
                    </button>
                 </div>
               </div>
@@ -56,9 +55,6 @@
 </template>
 
 <script>
-
-
-
 export default {
 
   props:{
@@ -127,13 +123,7 @@ export default {
 }
 </script>
 <style>
-.formater-container{
-	display:block;
-	height:auto;
-}
-.formater-container a{
-   color: black;
-}
+
 .formater-vue-pdf{
    border:1px solid black;
 }
