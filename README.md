@@ -1,6 +1,7 @@
 # formater-pdf-viewer-vjs
 
 
+use work from [FranckFreiburger](https://github.com/FranckFreiburger/vue-pdf)
 ## Build Setup
 
 ``` bash
