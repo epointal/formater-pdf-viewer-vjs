@@ -22,6 +22,10 @@
   position: relative;
   height: 32px;
   background-color: #474747; /* fallback */
+  border-color:#474747;
+  border-style: solid;
+  border-width:0 1px;
+  
   box-shadow: inset 1px 0 0 hsla(0,0%,100%,.08),
               inset 0 1px 1px hsla(0,0%,0%,.15),
               inset 0 -1px 0 hsla(0,0%,100%,.05),
@@ -140,9 +144,16 @@
   transition-duration: 150ms;
   transition-timing-function: ease;
   margin: 3px 2px 4px 0;
-
+  cursor:pointer;
 }
-
+.formater-pdf-viewer .toolbarButton[disabled]{
+	cursor:default;
+	opacity:0.5;
+}
+.formater-pdf-viewer a.toolbarButton{
+	max-height:21px;
+	max-width:18px;
+}
 
 .formater-pdf-viewer .toolbarButton:hover,
 .formater-pdf-viewer .toolbarButton:focus,
@@ -190,8 +201,6 @@
 .formater-pdf-viewer .dropdownToolbarButton > select > option {
   background: hsl(0,0%,24%);
 }
-
-
 
 .formater-pdf-viewer .toolbarButtonSpacer {
   width: 30px;

@@ -1,6 +1,6 @@
 <template>
-	<div class="formater-pdf" style="position: relative;display:block;">
-		<canvas style="width: 100%; display: block"></canvas><div class="annotationLayer">annotation layer</div>
+	<div class="formater-pdf" style="position:relative;display:block;">
+	<canvas style="width: 100%; display: block"></canvas><div class="annotationLayer">annotation layer</div>
 		<resize-sensor @resize="resize"></resize-sensor>
 	</div>
 </template>
@@ -17,7 +17,7 @@ background: rgba(0,0,0,0.5);
 box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);*/
 }
 .annotationLayer {
-	position: absolute;
+    position:absolute;
 	left: 0;
 	top: 0;
 	right: 0;
@@ -529,7 +529,14 @@ module.exports = {
 			this.pdf.printPage(dpi, pageList);
 		}
 	},
-	
+	created: function(){
+	     
+	      var $this = this;
+	      window.addEventListener('resize', function(){
+	          $this.resize();
+	      })
+	      //this.$i18n.locale = this.lang;
+	  },
 	mounted: function() {
 		
 		var canvasElt = this.$el.childNodes[0];

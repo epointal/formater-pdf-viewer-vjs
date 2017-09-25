@@ -9,21 +9,21 @@
 }
 </i18n>-->
 <template>
-   <div class="formater-pdf-viewer ">
-   	<div class="toolbar" style="display:block;margin0;padding:0;">
+   <div class="formater-pdf-viewer" style="position:relative;">
+   <div class="toolbar" style="display:block;margin0;padding:0;">
           <div class="toolbarContainer">
             <div class="toolbarViewer">
               <div class="toolbarViewerLeft">
                 <!--  <div class="toolbarButtonSpacer"></div>-->
                 <div class="splitToolbarButton hiddenSmallView">
-                  <button class="toolbarButton pageUp" @click="page -=1" :disabled="page <=1">
+                  <button class="toolbarButton pageUp" title="Page précédente" @click="page -=1" :disabled="page <=1">
                     <span >Previous</span>
                   </button>
                   <button class="toolbarButton pageDown" title="Page suivante" @click="page +=1" :disabled="page >= numPages">
                     <span data-l10n-id="next_label">Next</span>
                   </button>
                 </div>
-                <input class="toolbarField pageNumber" title="Page" v-model="page" size="4" min="1"  :max="numPages" type="number" >
+                <input class="toolbarField pageNumber" title="Page" v-model="page" size="4" min="1"  :max="numPages" type="number"  >
                 <span  class="toolbarLabel">sur {{numPages}}</span>
               </div>
               <div class="toolbarViewerRight">
@@ -50,7 +50,10 @@
               </div>
             </div>  
           </div>
-        </div><formater-pdf  ref="pdf" class="formater-vue-pdf" :src="src" :page="page" :rotate="rotate" :scale="scale"  @progress="progress" @error="error" @numPages="recordNumPages"></formater-pdf>
+        </div>
+		<div style="top:0;left:0;width:100%;">
+		<formater-pdf  ref="pdf" class="formater-vue-pdf" :src="src" :page="page" :rotate="rotate" :scale="scale"  @progress="progress" @error="error" @numPages="recordNumPages"></formater-pdf>
+		</div>
 	</div>
 </template>
 
@@ -112,7 +115,7 @@ export default {
 	},
 	
   created: function(){
-      console.log("pdf-viewer created")
+      console.log("pdf-viewer created");
       //this.$i18n.locale = this.lang;
   },
   mounted: function(){
@@ -124,7 +127,4 @@ export default {
 </script>
 <style>
 
-.formater-vue-pdf{
-   border:1px solid black;
-}
 </style>
