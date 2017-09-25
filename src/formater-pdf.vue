@@ -1,21 +1,26 @@
 <template>
 	<div class="formater-pdf" style="position:relative;display:block;">
-	<canvas style="width: 100%; display: block"></canvas><div class="annotationLayer">Loading ...</div>
+	<canvas :class="{draggable: scale>1}"></canvas><div class="annotationLayer">Loading ...</div>
 		<resize-sensor @resize="resize"></resize-sensor>
 	</div>
 </template>
 
 <style>
-
-/* see https://github.com/mozilla/pdf.js/blob/55a853b6678cf3d05681ffbb521e5228e607b5d2/test/annotation_layer_test.css */
 .formater-pdf canvas{
-
-border:1px solid rgba(0,0,0,0.8);
-background: rgba(0,0,0,0.5);
-/*	-webkit-box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);
--moz-box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);
-box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);*/
+	width:100%;
+	display:block;
+	border:1px solid rgba(0,0,0,0.8);
+	background: rgba(0,0,0,0.5);
+	cursor:default;
+	/*	-webkit-box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);
+	-moz-box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);
+	box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);*/
 }
+.formater-pdf canvas.draggable +div{
+    cursor:pointer;
+}
+/* see https://github.com/mozilla/pdf.js/blob/55a853b6678cf3d05681ffbb521e5228e607b5d2/test/annotation_layer_test.css */
+
 .annotationLayer {
     position:absolute;
 	left: 0;
@@ -322,11 +327,9 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		canvasElt.width = viewport.width;
 		canvasElt.height = viewport.height;
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		//ctx.scale(2,2);
 		ctx.scale(scale, scale);
-		console.log(canvasElt.width );
 		ctx.translate( (1-scale)*canvasElt.width/(2*scale),(1-scale)*canvasElt.height/(2*scale));
-		
+		ctx.translate(tx, ty);
 		
 		pdfRender = pdfPage.render({
 			canvasContext: canvasElt.getContext('2d'),
@@ -501,15 +504,6 @@ module.exports = {
 		page: function() {
 			
 			this.pdf.loadPage(this.page, this.rotate);
-		},
-		change: function(){
-	        this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
-	        return this.scale*this.tx*this.ty;
-	    },
-		tx: function(){
-		    //if scale change, tx and ty change too
-		    //if ty change we change tx too?
-		    this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
 		},
 		scale: function(){
 		    //if scale change, tx and ty change too

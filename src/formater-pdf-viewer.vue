@@ -52,7 +52,7 @@
           </div>
         </div>
 		<div style="top:0;left:0;width:100%;">
-		<formater-pdf  ref="pdf" class="formater-vue-pdf" :src="src" :page="page" :rotate="rotate" :scale="scale" :tx="tx" :ty="ty" :triggerPrint="print" @progress="progress" @error="error" @numPages="recordNumPages"></formater-pdf>
+		<formater-pdf  ref="pdf" class="formater-vue-pdf" :src="src" :page="page"  :scale="scale"  :triggerPrint="print" @progress="progress" @error="error" @numPages="recordNumPages"></formater-pdf>
 		</div>
 	</div>
 </template>
@@ -76,10 +76,7 @@ export default {
 			loadedRatio: 0,
 			page: 1,
 			numPages: 0,
-			rotate: 0,
 			scale: 1,
-			tx: 0,
-			ty:0,
 			print:0
 		}
   },
@@ -100,14 +97,11 @@ export default {
 		},
 		
 		zoomIn: function(){
-		   
 		    this.scale *= 1.25;
 		   
 		},
-		
 		zoomOut: function(){
 		    this.scale *= 0.8;
-		   // this.hom( 0.8 );
 		},
 		
 	},
