@@ -228,23 +228,28 @@
 }
 
 .formater-pdf-viewer .toolbarButton.zoomOut::before {
-   font-family: "FontAwesome";
-   content:"\f068";/*fa-mius*/
+    content:"\2501";
+    font-size:16px;
 }
 
 .formater-pdf-viewer .toolbarButton.zoomIn::before {
-  font-family: "FontAwesome";
-  content:"\f067";/*fa-plus*/
+  content:"\2795";
+  font-size:16px;
 }
 
 .formater-pdf-viewer .toolbarButton.presentationMode::before{
-  font-family: "FontAwesome";
+  /*font-family: "FontAwesome";
   content:"\f0b2";/*fa-arrows-alt*/
+  content:"\2922";
+  font-size:20px;
+  left:7px;
+  
 }
 
 .formater-pdf-viewer .toolbarButton.print::before{
-   font-family: "FontAwesome";
-  content:"\f02f";/*fa-print*/
+  content:"\2399";
+  font-size:20px;
+  left:7px;
 }
 
 .formater-pdf-viewer .toolbarButton.openFile::before{

@@ -52,7 +52,7 @@
           </div>
         </div>
 		<div style="top:0;left:0;width:100%;">
-		<formater-pdf  ref="pdf" class="formater-vue-pdf" :src="src" :page="page" :rotate="rotate" :scale="scale" :tx="tx" :triggerPrint="print" @progress="progress" @error="error" @numPages="recordNumPages"></formater-pdf>
+		<formater-pdf  ref="pdf" class="formater-vue-pdf" :src="src" :page="page" :rotate="rotate" :scale="scale" :tx="tx" :ty="ty" :triggerPrint="print" @progress="progress" @error="error" @numPages="recordNumPages"></formater-pdf>
 		</div>
 	</div>
 </template>
@@ -89,10 +89,7 @@ export default {
 
 			console.log(err);
 		},
-		/*print: function(){
-		    console.log(this.$refs.pdf);
-		    this.$refs.pdf.print();
-		},*/
+		
 		recordNumPages:function(event){
 		    console.log("registreNumpagses");
 		    console.log(event);
@@ -103,22 +100,24 @@ export default {
 		},
 		
 		zoomIn: function(){
+		   
 		    this.scale *= 1.25;
-		    this.tx -= 100;
+		   
 		},
 		
 		zoomOut: function(){
-		    this.scale *= 0.75;
-		}
+		    this.scale *= 0.8;
+		   // this.hom( 0.8 );
+		},
+		
 	},
 	
   created: function(){
-     // console.log("pdf-viewer created");
       //this.$i18n.locale = this.lang;
+      this.scale=1;
   },
   mounted: function(){
-      console.log("pdf-viewer mounted")
-      console.log(this.$refs);
+   
       
   }
 }

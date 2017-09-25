@@ -318,13 +318,16 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		emitEvent('pageSize', viewport.width, viewport.height);
 		
 		var ctx = canvasElt.getContext('2d');
-		
+		ctx.save();
 		canvasElt.width = viewport.width;
 		canvasElt.height = viewport.height;
-		//ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
 		//ctx.scale(2,2);
+		ctx.scale(scale, scale);
 		console.log(canvasElt.width );
-		ctx.transform(scale, 0, 0, scale, tx/scale,  ty/scale);
+		ctx.translate( (1-scale)*canvasElt.width/(2*scale),(1-scale)*canvasElt.height/(2*scale));
+		
+		
 		pdfRender = pdfPage.render({
 			canvasContext: canvasElt.getContext('2d'),
 			viewport: viewport
@@ -482,6 +485,14 @@ module.exports = {
 		}
 
 	},
+	
+	
+	computed:{
+	   /* change: function(){
+	        this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
+	        return this.scale*this.tx*this.ty;
+	    }*/
+	},
 	watch: {
 		/*src: function() {
 			
@@ -491,7 +502,16 @@ module.exports = {
 			
 			this.pdf.loadPage(this.page, this.rotate);
 		},
+		change: function(){
+	        this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
+	        return this.scale*this.tx*this.ty;
+	    },
 		tx: function(){
+		    //if scale change, tx and ty change too
+		    //if ty change we change tx too?
+		    this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
+		},
+		scale: function(){
 		    //if scale change, tx and ty change too
 		    //if ty change we change tx too?
 		    this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);

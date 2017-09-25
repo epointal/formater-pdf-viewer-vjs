@@ -25,7 +25,7 @@ import PdfComponent from './formater-pdf.vue';
 import PdfViewer from './formater-pdf-viewer.vue';
 
 ljs.addAliases({
-	dep: ['https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 
+	dep: [//'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 
 	   // 'https://rawgit.com/aeris-data/aeris-commons-fonts/develop/font/aeriscommmonsfonts.css',
 	    'viewer.css',
 	    'https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js',
