@@ -30,7 +30,7 @@
                 <a  class="toolbarButton presentationMode" title="Voir en plein écran" :href="src">
                   <span >Plein Ecran</span>
                 </a>
-                <button  class="toolbarButton print hiddenMediumView" title="Imprimer" >
+                <button  class="toolbarButton print hiddenMediumView" title="Imprimer" @click="print += 1;">
                   <span >Imprimer</span>
                 </button>
                 <a  class="toolbarButton download hiddenMediumView" title="Télécharger" :href="src" download>
@@ -39,11 +39,11 @@
               </div>
               <div class="toolbarViewerMiddle">
                 <div class="splitToolbarButton">
-                  <button  class="toolbarButton zoomOut" title="Zoom arrière" @click="zoomOut" >
+                  <button  class="toolbarButton zoomOut" title="Zoom arrière" @click="zoomOut" :disabled="scale <= 1">
                     <span >Zoom arrière</span>
                   </button>
                  <!--  <div class="splitToolbarButtonSeparator"></div>--> 
-                  <button  class="toolbarButton zoomIn" title="Zoom avant" @click="zoomIn" >
+                  <button  class="toolbarButton zoomIn" title="Zoom avant" @click="zoomIn" :disabled="scale > 8">
                     <span >Zoom avant</span>
                    </button>
                 </div>
@@ -52,7 +52,7 @@
           </div>
         </div>
 		<div style="top:0;left:0;width:100%;">
-		<formater-pdf  ref="pdf" class="formater-vue-pdf" :src="src" :page="page" :rotate="rotate" :scale="scale"  @progress="progress" @error="error" @numPages="recordNumPages"></formater-pdf>
+		<formater-pdf  ref="pdf" class="formater-vue-pdf" :src="src" :page="page" :rotate="rotate" :scale="scale" :tx="tx" :triggerPrint="print" @progress="progress" @error="error" @numPages="recordNumPages"></formater-pdf>
 		</div>
 	</div>
 </template>
@@ -79,7 +79,8 @@ export default {
 			rotate: 0,
 			scale: 1,
 			tx: 0,
-			ty:0
+			ty:0,
+			print:0
 		}
   },
  
@@ -88,10 +89,10 @@ export default {
 
 			console.log(err);
 		},
-		print: function(){
+		/*print: function(){
 		    console.log(this.$refs.pdf);
 		    this.$refs.pdf.print();
-		},
+		},*/
 		recordNumPages:function(event){
 		    console.log("registreNumpagses");
 		    console.log(event);
@@ -100,13 +101,10 @@ export default {
 		progress:function(event){
 		    this.loadedRatio = event.detail[0];
 		},
-		resize:function(event){
-		    console.log('resize');
-		   // this.$emit('resize');
-		},
+		
 		zoomIn: function(){
 		    this.scale *= 1.25;
-		    this.tx -= 1000;
+		    this.tx -= 100;
 		},
 		
 		zoomOut: function(){
@@ -115,7 +113,7 @@ export default {
 	},
 	
   created: function(){
-      console.log("pdf-viewer created");
+     // console.log("pdf-viewer created");
       //this.$i18n.locale = this.lang;
   },
   mounted: function(){

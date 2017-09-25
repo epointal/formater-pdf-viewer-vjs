@@ -1,6 +1,6 @@
 <template>
 	<div class="formater-pdf" style="position:relative;display:block;">
-	<canvas style="width: 100%; display: block"></canvas><div class="annotationLayer">annotation layer</div>
+	<canvas style="width: 100%; display: block"></canvas><div class="annotationLayer">Loading ...</div>
 		<resize-sensor @resize="resize"></resize-sensor>
 	</div>
 </template>
@@ -475,41 +475,34 @@ module.exports = {
 		password: {
 			type: Function,
 			default: null,
+		},
+		triggerprint:{
+		    type: Number,
+		    default:0
 		}
 
 	},
-	data(){
-	    return{
-	        resizeEventListener:null
-	    }
-	},
 	watch: {
-		src: function() {
+		/*src: function() {
 			
 			this.pdf.loadDocument(this.src);
-		},
+		},*/
 		page: function() {
 			
 			this.pdf.loadPage(this.page, this.rotate);
 		},
-		rotate: function() {
-			
-			this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
-		},
-		scale: function(){
-		    this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
-		},
 		tx: function(){
+		    //if scale change, tx and ty change too
+		    //if ty change we change tx too?
 		    this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
 		},
-		ty: function(){
-		    this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
+		triggerprint: function(){
+		    this.print();
 		}
 	},
 	
 	methods: {
 		resize: function(size) {
-	        console.log("resize pdf");
 			var canvasElt = this.$el.childNodes[0];
 			var annotationLayerElt = this.$el.childNodes[1];
 
@@ -525,16 +518,14 @@ module.exports = {
 			PDFJS.CustomStyle.setProp('transform', annotationLayerElt, 'scale('+resolutionScale+')');
 		},
 		print: function(dpi, pageList) {
-
 			this.pdf.printPage(dpi, pageList);
+			
 		}
 	},
 	created: function(){
 	     
 	      var $this = this;
-	      window.addEventListener('resize', function(){
-	          $this.resize();
-	      })
+	      window.addEventListener('resize',  $this.resize);
 	      //this.$i18n.locale = this.lang;
 	  },
 	mounted: function() {
