@@ -6,8 +6,8 @@ import vueCustomElement from 'vue-custom-element';
 Vue.use(vueCustomElement);
 
 //pour la traduction (non-utilisé pour le moment)
-//import VueI18n from 'vue-i18n';
-//Vue.use(VueI18n);
+import VueI18n from 'vue-i18n';
+Vue.use(VueI18n);
 
 /*import VueResource from 'vue-resource';
 Vue.use(VueResource);*/

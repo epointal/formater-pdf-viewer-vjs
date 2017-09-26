@@ -1,50 +1,70 @@
-<!--  <i18n>
+<i18n>
 {
    "en":{
-       "Previous": "Previous"
+       "Previous": 		"Previous",
+       "Previous page" :"Previous page",
+       "Next": 			"Next",
+       "Next page": 	"Next page",
+       "Page": 			"Page",
+       "Full screen": 	"Full screen",
+       "Print":			"Print",
+       "Download":		"Download",
+       "Zoom out":		"Zoom out",
+       "Zoom in":		"Zoom in"
    },
    "fr":{
-       "Previous": "Précédent"
+       "Previous": 		"Précédent",
+       "Previous page" :"Page précédente",
+       "Next": 			"Prochain",
+       "Next page": 	"Page suivante",
+       "Page": 			"Page",
+       "Full screen": 	"Plein écran",
+       "Print":			"Imprimer",
+       "Download":		"Télécharger",
+       "Zoom out":		"Zoom arrière",
+       "Zoom in":		"Zoom avant"
    }
 }
-</i18n>-->
+</i18n>
 <template>
+
    <div class="formater-pdf-viewer" style="position:relative;">
+   <div>{{$t("Previous")}}</div>
    <div class="toolbar" style="display:block;margin0;padding:0;">
           <div class="toolbarContainer">
             <div class="toolbarViewer">
               <div class="toolbarViewerLeft">
                 <!--  <div class="toolbarButtonSpacer"></div>-->
                 <div class="splitToolbarButton hiddenSmallView">
-                  <button class="toolbarButton pageUp" title="Page précédente" @click="page -=1" :disabled="page <=1">
-                    <span >Previous</span>
+                  <button class="toolbarButton pageUp" :title="$t('Previous page')"  @click="page -=1" :disabled="page <=1">
+                    <span >{{$t("Previous")}}</span>
                   </button>
-                  <button class="toolbarButton pageDown" title="Page suivante" @click="page +=1" :disabled="page >= numPages">
-                    <span data-l10n-id="next_label">Next</span>
+                  <button class="toolbarButton pageDown" :title="$t('Next page')"  @click="page +=1" :disabled="page >= numPages">
+                    <span data-l10n-id="next_label">{{$t("Next")}}</span>
                   </button>
                 </div>
-                <input class="toolbarField pageNumber" title="Page" v-model="page" size="4" min="1"  :max="numPages" type="number"  >
-                <span  class="toolbarLabel">sur {{numPages}}</span>
+                <input class="toolbarField pageNumber hiddenMediumView" :title="$t('Page')" v-model="page" size="4" min="1"  :max="numPages" type="number"  >
+                <span  class="toolbarLabel hiddenMediumView">sur {{numPages}}</span>
               </div>
               <div class="toolbarViewerRight">
-                <a  class="toolbarButton presentationMode" title="Voir en plein écran" :href="src">
-                  <span >Plein Ecran</span>
+                <a  class="toolbarButton presentationMode" :title="$t('Full screen')" :href="src">
+                  <span >{{$t('Full screen')}}</span>
                 </a>
-                <button  class="toolbarButton print hiddenMediumView" title="Imprimer" @click="print += 1;">
-                  <span >Imprimer</span>
+                <button  class="toolbarButton print hiddenMediumView" :title="$t('Print')" @click="print += 1;">
+                  <span >{{$t('Print')}}</span>
                 </button>
-                <a  class="toolbarButton download hiddenMediumView" title="Télécharger" :href="src" download>
-                  <span>Télécharger</span>
+                <a  class="toolbarButton download hiddenMediumView" :title="$t('Download')" :href="src" download>
+                  <span>{{$t('Download')}}</span>
                 </a>
               </div>
               <div class="toolbarViewerMiddle">
                 <div class="splitToolbarButton">
-                  <button  class="toolbarButton zoomOut" title="Zoom arrière" @click="zoomOut" :disabled="scale <= 1">
-                    <span >Zoom arrière</span>
+                  <button  class="toolbarButton zoomOut" :title="$t('Zoom out')" @click="zoomOut" :disabled="scale <= 1">
+                    <span >{{$t('Zoom out')}}</span>
                   </button>
                  <!--  <div class="splitToolbarButtonSeparator"></div>--> 
-                  <button  class="toolbarButton zoomIn" title="Zoom avant" @click="zoomIn" :disabled="scale > 8">
-                    <span >Zoom avant</span>
+                  <button  class="toolbarButton zoomIn" :title="$t('Zoom in')" @click="zoomIn" :disabled="scale > 8">
+                    <span >{{$t('Zoom in')}}</span>
                    </button>
                 </div>
               </div>
@@ -107,7 +127,7 @@ export default {
 	},
 	
   created: function(){
-      //this.$i18n.locale = this.lang;
+      this.$i18n.locale = this.lang;
       this.scale=1;
   },
   mounted: function(){
