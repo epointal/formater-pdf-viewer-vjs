@@ -1,6 +1,6 @@
 <template>
 	<div class="formater-pdf" style="position:relative;display:block;">
-	<canvas :class="{draggable: scale>1}"></canvas><div class="annotationLayer">Loading ...</div>
+	<canvas :class="{draggable: scale>1}"></canvas><div class="annotationLayer" @mousedown="beginDrag" @mousemove="drag" >Loading ...</div>
 		<resize-sensor @resize="resize"></resize-sensor>
 	</div>
 </template>
@@ -308,7 +308,7 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 	}
 	
 	this.renderPage = function(rotate, scale, tx, ty) {
-		
+	    this.renderingState = 1;
 		if ( pdfRender !== null )
 			return pdfRender.cancel();
 
@@ -337,6 +337,8 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		ctx.save();
 		canvasElt.width = viewport.width;
 		canvasElt.height = viewport.height;
+		this.width = canvasElt.width;
+		this.height = canvasElt.height;
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 		ctx.scale(scale, scale);
 		ctx.translate( (1-scale)*canvasElt.width/(2*scale),(1-scale)*canvasElt.height/(2*scale));
@@ -362,12 +364,13 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 				renderInteractiveForms: false,
 			});
 		});
-
+        var $this = this;
 		pdfRender
 		.then(function() {
-			
 			annotationLayerElt.style.visibility = '';
 			pdfRender = null;
+			$this.renderingState = 0;
+			
 		})
 		.catch(function(err) {
 
@@ -481,14 +484,6 @@ module.exports = {
 		    type: Number,
 		    default: 1
 		},
-		tx:{
-		    type: Number,
-			default: 0, 
-		},
-		ty:{
-		    type: Number,
-			default: 0, 
-		},
 		password: {
 			type: Function,
 			default: null,
@@ -502,7 +497,11 @@ module.exports = {
 	
 	data(){
 	    return{
-	    	resizeListener:null
+	    	resizeListener:null,
+	    	mouseupListener: null,
+	    	mousePosition: null,
+	    	tx: 0,
+	    	ty: 0
 	    }
 	},
 	computed:{
@@ -556,13 +555,36 @@ module.exports = {
 			
 		},
 		beginDrag:function(evt){
-		    return true;
+		    if( this.scale == 1){
+		        this.tx = 0;
+		        this.ty = 0;
+		        return;
+		    }
+		    this.mousePosition = { x: evt.layerX, y: evt.layerY};
+		    console.log(evt);
+		},
+		drag: function(evt){
+		    if( this.scale == 1){
+		        return;
+		    }
+		    if( this.mousePosition && !this.pdf.renderingState){
+			    this.tx -= this.mousePosition.x - evt.layerX;
+			    this.ty -= this.mousePosition.y - evt.layerY;
+			    if( Math.abs( this.tx)<this.pdf.width && Math.abs( this.ty)< this.pdf.height){
+				    this.mousePosition = { x: evt.layerX, y: evt.layerY};
+				    this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
+			    }
+		    }
+		},
+		endDrag: function(evt){
+		    this.mousePosition = null;
 		}
 	},
 	created: function(){
 	     
 	      var $this = this;
 	      this.resizeListener = window.addEventListener('resize',  $this.resize);
+	      this.mouseUpListener = window.addEventListener('mouseup', $this.endDrag)
 	      //this.$i18n.locale = this.lang;
 	  },
 	mounted: function() {
@@ -588,6 +610,7 @@ module.exports = {
 	},
 	destroyed: function() {
 		window.removeEventListener( 'resize', this.resizeListener);
+		window.removeEventListener( 'mouseup', this.mouseupListener);
 		this.pdf.destroy();
 	}
 }
