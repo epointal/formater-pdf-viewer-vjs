@@ -318,6 +318,17 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		if ( rotate === undefined )
 			rotate = 0;
 
+		if( scale === undefined ){
+		    scale = 1;
+		}
+		
+		if( tx === undefined ){
+		    tx = 0;
+		}
+		
+		if( ty === undefined ){
+		    ty = 0;
+		}
 		var viewport = pdfPage.getViewport(canvasElt.offsetWidth / pdfPage.getViewport(1).width, rotate);
 
 		emitEvent('pageSize', viewport.width, viewport.height);
@@ -362,12 +373,12 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 
 			pdfRender = null;
 			if ( err === 'cancelled' )
-				return this.renderPage(rotate);
+				return this.renderPage(rotate, scale, tx, ty);
 			emitEvent('error', err);
 		}.bind(this))
 	}		
 
-	this.loadPage = function(pageNumber, rotate) {
+	this.loadPage = function(pageNumber, rotate, scale, tx, ty) {
 		
 		pdfPage = null;
 		
@@ -378,7 +389,7 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		.then(function(page) {
 
 			pdfPage = page;
-			this.renderPage(rotate);
+			this.renderPage(rotate, scale, tx, ty);
 			emitEvent('pageLoaded', page.pageNumber);
 		}.bind(this))
 		.catch(function(err) {
@@ -489,7 +500,11 @@ module.exports = {
 
 	},
 	
-	
+	data(){
+	    return{
+	    	resizeListener:null
+	    }
+	},
 	computed:{
 	   /* change: function(){
 	        this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
@@ -503,11 +518,16 @@ module.exports = {
 		},*/
 		page: function() {
 			
-			this.pdf.loadPage(this.page, this.rotate);
+			this.pdf.loadPage(this.page, this.rotate, this.scale, this.tx, this.ty);
+			//this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
 		},
 		scale: function(){
 		    //if scale change, tx and ty change too
 		    //if ty change we change tx too?
+		    if(this.scale==1){
+		        this.tx = 0;
+		        this.ty = 0;
+		    }
 		    this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
 		},
 		triggerprint: function(){
@@ -534,12 +554,15 @@ module.exports = {
 		print: function(dpi, pageList) {
 			this.pdf.printPage(dpi, pageList);
 			
+		},
+		beginDrag:function(evt){
+		    return true;
 		}
 	},
 	created: function(){
 	     
 	      var $this = this;
-	      window.addEventListener('resize',  $this.resize);
+	      this.resizeListener = window.addEventListener('resize',  $this.resize);
 	      //this.$i18n.locale = this.lang;
 	  },
 	mounted: function() {
@@ -564,7 +587,7 @@ module.exports = {
 		this.pdf.loadDocument(this.src);
 	},
 	destroyed: function() {
-		
+		window.removeEventListener( 'resize', this.resizeListener);
 		this.pdf.destroy();
 	}
 }
