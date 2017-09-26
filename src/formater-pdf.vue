@@ -1,169 +1,10 @@
 <template>
 	<div class="formater-pdf" style="position:relative;display:block;">
 	<canvas :class="{draggable: scale>1}"></canvas><div class="annotationLayer" @mousedown="beginDrag" @mousemove="drag">Loading ...</div>
-		<resize-sensor @resize="resize"></resize-sensor>
 	</div>
 </template>
 
-<style>
-.formater-pdf canvas{
-	width:100%;
-	display:block;
-	border:1px solid rgba(0,0,0,0.8);
-	background: rgba(0,0,0,0.5);
-	cursor:default;
-	/*	-webkit-box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);
-	-moz-box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);
-	box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);*/
-}
-.formater-pdf canvas.draggable +div{
-    cursor:pointer;
-}
-/* see https://github.com/mozilla/pdf.js/blob/55a853b6678cf3d05681ffbb521e5228e607b5d2/test/annotation_layer_test.css */
 
-.annotationLayer {
-    position:absolute;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-}
-
-.annotationLayer section {
-  position: absolute;
-}
-
-.annotationLayer .linkAnnotation > a {
-  position: absolute;
-  font-size: 1em;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.annotationLayer .linkAnnotation > a /* -ms-a */  {
-  background: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") 0 0 repeat;
-}
-
-.annotationLayer .linkAnnotation > a:hover {
-  opacity: 0.2;
-  background: #ff0;
-  box-shadow: 0px 2px 10px #ff0;
-}
-
-.annotationLayer .textAnnotation img {
-  position: absolute;
-  cursor: pointer;
-}
-
-.annotationLayer .textWidgetAnnotation input,
-.annotationLayer .textWidgetAnnotation textarea,
-.annotationLayer .choiceWidgetAnnotation select,
-.annotationLayer .buttonWidgetAnnotation.checkBox input,
-.annotationLayer .buttonWidgetAnnotation.radioButton input {
-  background-color: rgba(0, 54, 255, 0.13);
-  border: 1px solid transparent;
-  box-sizing: border-box;
-  font-size: 9px;
-  height: 100%;
-  padding: 0 3px;
-  vertical-align: top;
-  width: 100%;
-}
-
-.annotationLayer .textWidgetAnnotation textarea {
-  font: message-box;
-  font-size: 9px;
-  resize: none;
-}
-
-.annotationLayer .textWidgetAnnotation input[disabled],
-.annotationLayer .textWidgetAnnotation textarea[disabled],
-.annotationLayer .choiceWidgetAnnotation select[disabled],
-.annotationLayer .buttonWidgetAnnotation.checkBox input[disabled],
-.annotationLayer .buttonWidgetAnnotation.radioButton input[disabled] {
-  background: none;
-  border: 1px solid transparent;
-  cursor: not-allowed;
-}
-
-.annotationLayer .textWidgetAnnotation input:hover,
-.annotationLayer .textWidgetAnnotation textarea:hover,
-.annotationLayer .choiceWidgetAnnotation select:hover,
-.annotationLayer .buttonWidgetAnnotation.checkBox input:hover,
-.annotationLayer .buttonWidgetAnnotation.radioButton input:hover {
-  border: 1px solid #000;
-}
-
-.annotationLayer .textWidgetAnnotation input:focus,
-.annotationLayer .textWidgetAnnotation textarea:focus,
-.annotationLayer .choiceWidgetAnnotation select:focus {
-  background: none;
-  border: 1px solid transparent;
-}
-
-.annotationLayer .textWidgetAnnotation input.comb {
-  font-family: monospace;
-  padding-left: 2px;
-  padding-right: 0;
-}
-
-.annotationLayer .textWidgetAnnotation input.comb:focus {
-  /*
-   * Letter spacing is placed on the right side of each character. Hence, the
-   * letter spacing of the last character may be placed outside the visible
-   * area, causing horizontal scrolling. We avoid this by extending the width
-   * when the element has focus and revert this when it loses focus.
-   */
-  width: 115%;
-}
-
-.annotationLayer .buttonWidgetAnnotation.checkBox input,
-.annotationLayer .buttonWidgetAnnotation.radioButton input {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  appearance: none;
-}
-
-.annotationLayer .popupWrapper {
-  position: absolute;
-  width: 20em;
-}
-
-.annotationLayer .popup {
-  position: absolute;
-  z-index: 200;
-  max-width: 20em;
-  background-color: #FFFF99;
-  box-shadow: 0px 2px 5px #333;
-  border-radius: 2px;
-  padding: 0.6em;
-  margin-left: 5px;
-  cursor: pointer;
-  word-wrap: break-word;
-}
-
-.annotationLayer .popup h1 {
-  font-size: 1em;
-  border-bottom: 1px solid #000000;
-  padding-bottom: 0.2em;
-}
-
-.annotationLayer .popup p {
-  padding-top: 0.2em;
-}
-
-.annotationLayer .highlightAnnotation,
-.annotationLayer .underlineAnnotation,
-.annotationLayer .squigglyAnnotation,
-.annotationLayer .strikeoutAnnotation,
-.annotationLayer .lineAnnotation svg line,
-.annotationLayer .fileAttachmentAnnotation {
-  cursor: pointer;
-}
-</style>
 
 <script>
 "use strict";
@@ -340,9 +181,13 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		this.width = canvasElt.width;
 		this.height = canvasElt.height;
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.translate(tx, ty);
 		ctx.scale(scale, scale);
+		///ctx.translate( (1-scale)*(tx+canvasElt.width/2)/scale,(1-scale)*(ty+canvasElt.height/2)/scale);
+		
 		ctx.translate( (1-scale)*canvasElt.width/(2*scale),(1-scale)*canvasElt.height/(2*scale));
-		ctx.translate(tx/scale, ty/scale);
+		
+		
 		
 		pdfRender = pdfPage.render({
 			canvasContext: canvasElt.getContext('2d'),
@@ -375,6 +220,7 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		.catch(function(err) {
 
 			pdfRender = null;
+			$this.renderingState = 0;
 			if ( err === 'cancelled' )
 				return this.renderPage(rotate, scale, tx, ty);
 			emitEvent('error', err);
@@ -603,3 +449,162 @@ module.exports = {
 }
 
 </script>
+<style>
+.formater-pdf canvas{
+	width:100%;
+	display:block;
+	border:1px solid rgba(0,0,0,0.8);
+	background: rgba(0,0,0,0.5);
+	cursor:default;
+	/*	-webkit-box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);
+	-moz-box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);
+	box-shadow: inset 1px 1px 5px 2px rgba(0,0,0,0.5);*/
+}
+.formater-pdf canvas.draggable +div{
+    cursor:pointer;
+}
+/* see https://github.com/mozilla/pdf.js/blob/55a853b6678cf3d05681ffbb521e5228e607b5d2/test/annotation_layer_test.css */
+
+.annotationLayer {
+    position:absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.annotationLayer section {
+  position: absolute;
+}
+
+.annotationLayer .linkAnnotation > a {
+  position: absolute;
+  font-size: 1em;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.annotationLayer .linkAnnotation > a /* -ms-a */  {
+  background: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") 0 0 repeat;
+}
+
+.annotationLayer .linkAnnotation > a:hover {
+  opacity: 0.2;
+  background: #ff0;
+  box-shadow: 0px 2px 10px #ff0;
+}
+
+.annotationLayer .textAnnotation img {
+  position: absolute;
+  cursor: pointer;
+}
+
+.annotationLayer .textWidgetAnnotation input,
+.annotationLayer .textWidgetAnnotation textarea,
+.annotationLayer .choiceWidgetAnnotation select,
+.annotationLayer .buttonWidgetAnnotation.checkBox input,
+.annotationLayer .buttonWidgetAnnotation.radioButton input {
+  background-color: rgba(0, 54, 255, 0.13);
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  font-size: 9px;
+  height: 100%;
+  padding: 0 3px;
+  vertical-align: top;
+  width: 100%;
+}
+
+.annotationLayer .textWidgetAnnotation textarea {
+  font: message-box;
+  font-size: 9px;
+  resize: none;
+}
+
+.annotationLayer .textWidgetAnnotation input[disabled],
+.annotationLayer .textWidgetAnnotation textarea[disabled],
+.annotationLayer .choiceWidgetAnnotation select[disabled],
+.annotationLayer .buttonWidgetAnnotation.checkBox input[disabled],
+.annotationLayer .buttonWidgetAnnotation.radioButton input[disabled] {
+  background: none;
+  border: 1px solid transparent;
+  cursor: not-allowed;
+}
+
+.annotationLayer .textWidgetAnnotation input:hover,
+.annotationLayer .textWidgetAnnotation textarea:hover,
+.annotationLayer .choiceWidgetAnnotation select:hover,
+.annotationLayer .buttonWidgetAnnotation.checkBox input:hover,
+.annotationLayer .buttonWidgetAnnotation.radioButton input:hover {
+  border: 1px solid #000;
+}
+
+.annotationLayer .textWidgetAnnotation input:focus,
+.annotationLayer .textWidgetAnnotation textarea:focus,
+.annotationLayer .choiceWidgetAnnotation select:focus {
+  background: none;
+  border: 1px solid transparent;
+}
+
+.annotationLayer .textWidgetAnnotation input.comb {
+  font-family: monospace;
+  padding-left: 2px;
+  padding-right: 0;
+}
+
+.annotationLayer .textWidgetAnnotation input.comb:focus {
+  /*
+   * Letter spacing is placed on the right side of each character. Hence, the
+   * letter spacing of the last character may be placed outside the visible
+   * area, causing horizontal scrolling. We avoid this by extending the width
+   * when the element has focus and revert this when it loses focus.
+   */
+  width: 115%;
+}
+
+.annotationLayer .buttonWidgetAnnotation.checkBox input,
+.annotationLayer .buttonWidgetAnnotation.radioButton input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+}
+
+.annotationLayer .popupWrapper {
+  position: absolute;
+  width: 20em;
+}
+
+.annotationLayer .popup {
+  position: absolute;
+  z-index: 200;
+  max-width: 20em;
+  background-color: #FFFF99;
+  box-shadow: 0px 2px 5px #333;
+  border-radius: 2px;
+  padding: 0.6em;
+  margin-left: 5px;
+  cursor: pointer;
+  word-wrap: break-word;
+}
+
+.annotationLayer .popup h1 {
+  font-size: 1em;
+  border-bottom: 1px solid #000000;
+  padding-bottom: 0.2em;
+}
+
+.annotationLayer .popup p {
+  padding-top: 0.2em;
+}
+
+.annotationLayer .highlightAnnotation,
+.annotationLayer .underlineAnnotation,
+.annotationLayer .squigglyAnnotation,
+.annotationLayer .strikeoutAnnotation,
+.annotationLayer .lineAnnotation svg line,
+.annotationLayer .fileAttachmentAnnotation {
+  cursor: pointer;
+}
+</style>

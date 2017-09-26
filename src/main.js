@@ -5,7 +5,7 @@ import Vue from 'vue';
 import vueCustomElement from 'vue-custom-element';
 Vue.use(vueCustomElement);
 
-//pour la traduction (non-utilisé pour le moment)
+//pour la traduction 
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
 
@@ -15,7 +15,7 @@ Vue.use(VueResource);*/
 /*import PDFJS from 'pdfjs-dist/webpack.js';
 Vue.use(PDFJS);*/
 
-import VueResizeSensor from 'vue-resize-sensor';
+//import VueResizeSensor from 'vue-resize-sensor';
 //Vue.use(VueResizeSensor);
 //var PDFJS = require('pdfjs-dist/webpack.js');
 //var resizeSensor = require('vue-resize-sensor');
@@ -44,9 +44,9 @@ ljs.load('dep', function() {
 	}
 	
 
-    
-	Vue.customElement('resize-sensor', VueResizeSensor);
-    window.registredAerisElements.push('resize-sensor');
+   
+	//Vue.customElement('resize-sensor', VueResizeSensor);
+    //window.registredAerisElements.push('resize-sensor'); 
 	
 	Vue.customElement('formater-pdf', PdfComponent);
 	window.registredAerisElements.push('formater-pdf');

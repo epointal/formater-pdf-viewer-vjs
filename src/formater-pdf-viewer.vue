@@ -33,8 +33,7 @@
           <div class="toolbarContainer">
             <div class="toolbarViewer">
               <div class="toolbarViewerLeft">
-                <!--  <div class="toolbarButtonSpacer"></div>-->
-                <div class="splitToolbarButton hiddenSmallView">
+                <div class="splitToolbarButton">
                   <button class="toolbarButton pageUp" :title="$t('Previous page')"  @click="page -=1" :disabled="page <=1">
                     <span >{{$t("Previous")}}</span>
                   </button>
@@ -61,7 +60,7 @@
                   <button  class="toolbarButton zoomOut" :title="$t('Zoom out')" @click="zoomOut" :disabled="scale <= 1">
                     <span >{{$t('Zoom out')}}</span>
                   </button>
-                 <!--  <div class="splitToolbarButtonSeparator"></div>--> 
+                 
                   <button  class="toolbarButton zoomIn" :title="$t('Zoom in')" @click="zoomIn" :disabled="scale > 8">
                     <span >{{$t('Zoom in')}}</span>
                    </button>
@@ -141,8 +140,7 @@ export default {
   margin: 0;
 }
 .formater-pdf-viewer input,
-.formater-pdf-viewer button,
-.formater-pdf-viewer select {
+.formater-pdf-viewer button{
   font: message-box;
   outline: none;
 }
@@ -238,8 +236,7 @@ export default {
 
 }
 .formater-pdf-viewer .splitToolbarButton > .toolbarButton:hover,
-.formater-pdf-viewer .splitToolbarButton > .toolbarButton:focus,
-.formater-pdf-viewer .dropdownToolbarButton:hover {
+.formater-pdf-viewer .splitToolbarButton > .toolbarButton:focus{
   background-color: hsla(0,0%,0%,.2);
   box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
               0 0 1px hsla(0,0%,100%,.15) inset,
@@ -249,23 +246,7 @@ export default {
 .formater-pdf-viewer .splitToolbarButton > .toolbarButton {
   position: relative;
 }
-.formater-pdf-viewer .splitToolbarButtonSeparator {
-  padding: 8px 0;
-  width: 1px;
-  background-color: hsla(0,0%,0%,.5);
-  z-index: 99;
-  box-shadow: 0 0 0 1px hsla(0,0%,100%,.08);
-  display: inline-block;
-  margin: 5px 0;
-}
-.formater-pdf-viewer .splitToolbarButton:hover > .splitToolbarButtonSeparator {
-  padding: 12px 0;
-  margin: 1px 0;
-  box-shadow: 0 0 0 1px hsla(0,0%,100%,.03);
-  transition-property: padding;
-  transition-duration: 10ms;
-  transition-timing-function: ease;
-}
+
 
 .formater-pdf-viewer .toolbarButton{
   min-width: 16px;
@@ -294,8 +275,7 @@ export default {
 }
 
 .formater-pdf-viewer .toolbarButton:hover,
-.formater-pdf-viewer .toolbarButton:focus,
-.formater-pdf-viewer .dropdownToolbarButton {
+.formater-pdf-viewer .toolbarButton:focus{
   background-color: hsla(0,0%,0%,.12);
   background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
   background-clip: padding-box;
@@ -306,8 +286,7 @@ export default {
               0 1px 0 hsla(0,0%,100%,.05);
 }
 
-.formater-pdf-viewer .toolbarButton:hover:active,
-.formater-pdf-viewer .dropdownToolbarButton:hover:active {
+.formater-pdf-viewer .toolbarButton:hover:active{
   background-color: hsla(0,0%,0%,.2);
   background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
   border-color: hsla(0,0%,0%,.35) hsla(0,0%,0%,.4) hsla(0,0%,0%,.45);
@@ -317,33 +296,6 @@ export default {
   transition-property: background-color, border-color, box-shadow;
   transition-duration: 10ms;
   transition-timing-function: linear;
-}
-
-.formater-pdf-viewer .dropdownToolbarButton {
-  width: 120px;
-  max-width: 120px;
-  padding-top:1px;
-  overflow: hidden;
-}
-
-.formater-pdf-viewer .dropdownToolbarButton > select {
-  min-width: 140px;
-  font-size: 12px;
-  color: hsl(0,0%,95%);
-  margin: 0;
-  padding: 3px 2px 2px;
-  border: none;
-  background: rgba(0,0,0,0); /* Opera does not support 'transparent' <select> background */
-}
-
-.formater-pdf-viewer .dropdownToolbarButton > select > option {
-  background: hsl(0,0%,24%);
-}
-
-.formater-pdf-viewer .toolbarButtonSpacer {
-  width: 30px;
-  display: inline-block;
-  height: 1px;
 }
 
 .formater-pdf-viewer .toolbarButton::before{
@@ -451,14 +403,6 @@ export default {
   cursor: default;
 }
 
-/* TODO: file FF bug to support ::-moz-selection:window-inactive
-   so we can override the opaque grey background when the window is inactive;
-   see https://bugzilla.mozilla.org/show_bug.cgi?id=706209 */
-::selection { background: rgba(0,0,255,0.3); }
-::-moz-selection { background: rgba(0,0,255,0.3); }
-.grab-to-pan-grab *:not(input):not(textarea):not(button):not(select):not(:link) {
-  cursor: inherit !important;
-}
 
 @page {
   margin: 0;
@@ -502,9 +446,6 @@ export default {
   .formater-pdf-viewer .hiddenMediumView, 
   .formater-pdf-viewer .hiddenMediumView * {
     display: none;
-  }
-  .formater-pdf-viewer .toolbarButtonSpacer {
-    width: 0;
   }
 }
 
