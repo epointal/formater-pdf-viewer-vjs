@@ -1,6 +1,6 @@
 <template>
 	<div class="formater-pdf" style="position:relative;display:block;">
-	<canvas :class="{draggable: scale>1}"></canvas><div class="annotationLayer" @mousedown="beginDrag" @mousemove="drag" >Loading ...</div>
+	<canvas :class="{draggable: scale>1}"></canvas><div class="annotationLayer" @mousedown="beginDrag" @mousemove="drag">Loading ...</div>
 		<resize-sensor @resize="resize"></resize-sensor>
 	</div>
 </template>
@@ -342,7 +342,7 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 		ctx.scale(scale, scale);
 		ctx.translate( (1-scale)*canvasElt.width/(2*scale),(1-scale)*canvasElt.height/(2*scale));
-		ctx.translate(tx, ty);
+		ctx.translate(tx/scale, ty/scale);
 		
 		pdfRender = pdfPage.render({
 			canvasContext: canvasElt.getContext('2d'),
@@ -504,17 +504,7 @@ module.exports = {
 	    	ty: 0
 	    }
 	},
-	computed:{
-	   /* change: function(){
-	        this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
-	        return this.scale*this.tx*this.ty;
-	    }*/
-	},
 	watch: {
-		/*src: function() {
-			
-			this.pdf.loadDocument(this.src);
-		},*/
 		page: function() {
 			
 			this.pdf.loadPage(this.page, this.rotate, this.scale, this.tx, this.ty);
@@ -561,7 +551,6 @@ module.exports = {
 		        return;
 		    }
 		    this.mousePosition = { x: evt.layerX, y: evt.layerY};
-		    console.log(evt);
 		},
 		drag: function(evt){
 		    if( this.scale == 1){
@@ -570,10 +559,10 @@ module.exports = {
 		    if( this.mousePosition && !this.pdf.renderingState){
 			    this.tx -= this.mousePosition.x - evt.layerX;
 			    this.ty -= this.mousePosition.y - evt.layerY;
-			    if( Math.abs( this.tx)<this.pdf.width && Math.abs( this.ty)< this.pdf.height){
+			   // if( Math.abs( this.tx)<this.pdf.width && Math.abs( this.ty)< this.pdf.height){
 				    this.mousePosition = { x: evt.layerX, y: evt.layerY};
 				    this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
-			    }
+			   // }
 		    }
 		},
 		endDrag: function(evt){
@@ -581,10 +570,8 @@ module.exports = {
 		}
 	},
 	created: function(){
-	     
-	      var $this = this;
-	      this.resizeListener = window.addEventListener('resize',  $this.resize);
-	      this.mouseUpListener = window.addEventListener('mouseup', $this.endDrag)
+	      this.resizeListener = window.addEventListener('resize',  this.resize);
+	      this.mouseUpListener = window.addEventListener('mouseup', this.endDrag)
 	      //this.$i18n.locale = this.lang;
 	  },
 	mounted: function() {

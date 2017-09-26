@@ -367,8 +367,8 @@
 }
 
 @media all and (max-width: 640px) {
-  .formater-pdf-viewer .hiddenSmallView, 
-  .formater-pdf-viewer .hiddenSmallView * {
+  .formater-pdf-viewer .hiddenMediumView, 
+  .formater-pdf-viewer .hiddenMediumView * {
     display: none;
   }
   .formater-pdf-viewer .toolbarButtonSpacer {
