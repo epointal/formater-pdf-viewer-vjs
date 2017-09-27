@@ -139,6 +139,7 @@ export default {
   padding: 0;
   margin: 0;
 }
+
 .formater-pdf-viewer input,
 .formater-pdf-viewer button{
   font: message-box;
@@ -272,6 +273,7 @@ export default {
 .formater-pdf-viewer a.toolbarButton{
 	max-height:21px;
 	max-width:18px;
+	box-sizing: unset;
 }
 
 .formater-pdf-viewer .toolbarButton:hover,
