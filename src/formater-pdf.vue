@@ -9,7 +9,18 @@
 <script>
 "use strict";
 
-var PDFJS = require('pdfjs-dist/webpack.js');
+//var PDFJS = require('pdfjs-dist/webpack.js');
+var PDFJS = require('pdfjs-dist/build/pdf.js');
+//var PdfjsWorker = require('worker-loader!./build/pdf.worker.js');
+
+/*if (typeof window !== 'undefined' && 'Worker' in window) {
+  pdfjs.PDFJS.workerPort = new PdfjsWorker();
+} else {
+  pdfjs.PDFJS.disableWorker = true;
+}
+
+module.exports = pdfjs;*/
+PDFJS.PDFJS.disableWorker = true;
 //var resizeSensor = require('vue-resize-sensor');
 //var resizeSensor = new VueResizeSensor(); 
 function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
