@@ -1,6 +1,6 @@
 {
   "name": "formater-pdf-viewer-vjs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Webcomponent pdf viewer use vuejs",
   "main": "src/formater-pdf-viewer.vue",
   "repository": {
