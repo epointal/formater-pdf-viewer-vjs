@@ -28,7 +28,8 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 	var pdfDoc = null;
 	var pdfPage = null;
 	var pdfRender = null;
-
+    var center = null;
+    
 	function clearCanvas() {
 		
 		canvasElt.getContext('2d').clearRect(0, 0, canvasElt.width, canvasElt.height);
@@ -130,7 +131,7 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 						var printCanvasElt = win.document.body.appendChild(win.document.createElement('canvas'));
 						printCanvasElt.width = (viewport.width * PRINT_UNITS);
 						printCanvasElt.height = (viewport.height * PRINT_UNITS);
-
+                        
 						return page.render({
 							canvasContext: printCanvasElt.getContext('2d'),
 							transform: [ // Additional transform, applied just before viewport transform.
@@ -181,6 +182,7 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		if( ty === undefined ){
 		    ty = 0;
 		}
+		
 		var viewport = pdfPage.getViewport(canvasElt.offsetWidth / pdfPage.getViewport(1).width, rotate);
 
 		emitEvent('pageSize', viewport.width, viewport.height);
@@ -191,14 +193,24 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		canvasElt.height = viewport.height;
 		this.width = canvasElt.width;
 		this.height = canvasElt.height;
+		if(this.center === null){
+		    this.center = {
+		          x: this.width/2,
+		          y: this.height/2
+		    }
+		}
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 		ctx.translate(tx, ty);
 		ctx.scale(scale, scale);
 		///ctx.translate( (1-scale)*(tx+canvasElt.width/2)/scale,(1-scale)*(ty+canvasElt.height/2)/scale);
 		
+		//ctx.translate( (1-scale)*canvasElt.width/(2*scale),(1-scale)*canvasElt.height/(2*scale));
 		ctx.translate( (1-scale)*canvasElt.width/(2*scale),(1-scale)*canvasElt.height/(2*scale));
 		
-		
+		this.center = {
+		        x: this.width/(2*scale) - tx,
+		        y: this.height/(2*scale)- ty
+		}
 		
 		pdfRender = pdfPage.render({
 			canvasContext: canvasElt.getContext('2d'),
