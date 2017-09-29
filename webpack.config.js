@@ -4,7 +4,7 @@ var PACKAGE = require('./package.json');
 var buildVersion = PACKAGE.version;
 var buildName = PACKAGE.name;
 var CleanWebpackPlugin = require('clean-webpack-plugin')
-
+var apiHost = "https://rawgit.com/epointal/formater-pdf-viewer-vjs/master";
 
 
 var pathsToClean = [
@@ -15,7 +15,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: 'https://rawgit.com/epointal/formater-pdf-viewer-vjs/master/dist/',
+    publicPath: '/dist/',
    // assetsPublicPath: '',
     filename: buildName+'_'+buildVersion+'.js'
   },
@@ -70,7 +70,8 @@ if (process.env.NODE_ENV === 'production') {
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: '"production"'
+        NODE_ENV: '"production"',
+        __API__: apiHost
       }
     }),
     new CleanWebpackPlugin(pathsToClean),
