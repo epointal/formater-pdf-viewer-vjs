@@ -5,6 +5,8 @@ var buildVersion = PACKAGE.version;
 var buildName = PACKAGE.name;
 var CleanWebpackPlugin = require('clean-webpack-plugin')
 
+
+
 var pathsToClean = [
   'dist/*.*'
 ]
@@ -61,7 +63,8 @@ if (process.env.NODE_ENV === 'development') {
 	module.exports.output.filename='build.js'
 }
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
+  module.exports.devtool = '#source-map';
+  module.exports.output.publicPath= PACKAGE.url+ buildName +'/'+buildVersion+'/dist/';
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
