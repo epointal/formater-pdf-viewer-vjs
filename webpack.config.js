@@ -15,7 +15,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: PACKAGE.url+ 'dist/',
+    publicPath: 'https://rawgit.com/epointal/formater-pdf-viewer-vjs/master/dist/',
    // assetsPublicPath: '',
     filename: buildName+'_'+buildVersion+'.js'
   },
