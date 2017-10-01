@@ -34,10 +34,10 @@
             <div class="toolbarViewer">
               <div class="toolbarViewerLeft">
                 <div class="splitToolbarButton">
-                  <button class="toolbarButton pageUp" :title="$t('Previous page')"  @click="page -=1" :disabled="page <=1">
+                  <button class="toolbarButton pageUp" :class="{ facontent: fa}" :title="$t('Previous page')"  @click="page -=1" :disabled="page <=1">
                     <span >{{$t("Previous")}}</span>
                   </button>
-                  <button class="toolbarButton pageDown" :title="$t('Next page')"  @click="page +=1" :disabled="page >= numPages">
+                  <button class="toolbarButton pageDown" :class="{ facontent: fa}" :title="$t('Next page')"  @click="page +=1" :disabled="page >= numPages">
                     <span data-l10n-id="next_label">{{$t("Next")}}</span>
                   </button>
                 </div>
@@ -45,23 +45,23 @@
                 <span  class="toolbarLabel hiddenMediumView">sur {{numPages}}</span>
               </div>
               <div class="toolbarViewerRight">
-                <a  class="toolbarButton presentationMode" :title="$t('Full screen')" :href="src">
+                <a  class="toolbarButton presentationMode" :class="{ facontent: fa}" :title="$t('Full screen')" :href="src">
                   <span >{{$t('Full screen')}}</span>
                 </a>
-                <button  class="toolbarButton print hiddenMediumView" :title="$t('Print')" @click="print += 1;">
+                <button  class="toolbarButton print hiddenMediumView" :class="{ facontent: fa}" :title="$t('Print')" @click="print += 1;">
                   <span >{{$t('Print')}}</span>
                 </button>
-                <a  class="toolbarButton download hiddenMediumView" :title="$t('Download')" :href="src" download>
+                <a  class="toolbarButton download hiddenMediumView" :class="{ facontent: fa}" :title="$t('Download')" :href="src" download>
                   <span>{{$t('Download')}}</span>
                 </a>
               </div>
               <div class="toolbarViewerMiddle">
                 <div class="splitToolbarButton">
-                  <button  class="toolbarButton zoomOut" :title="$t('Zoom out')" @click="zoomOut" :disabled="scale <= 1">
+                  <button  class="toolbarButton zoomOut" :class="{ facontent: fa}" :title="$t('Zoom out')" @click="zoomOut" :disabled="scale <= 1">
                     <span >{{$t('Zoom out')}}</span>
                   </button>
                  
-                  <button  class="toolbarButton zoomIn" :title="$t('Zoom in')" @click="zoomIn" :disabled="scale > 8">
+                  <button  class="toolbarButton zoomIn" :class="{ facontent: fa}" :title="$t('Zoom in')" @click="zoomIn" :disabled="scale > 8">
                     <span >{{$t('Zoom in')}}</span>
                    </button>
                 </div>
@@ -86,7 +86,11 @@ export default {
 	  lang:  {
 	      type: String,
 	      default: 'fr'
-	    }	  
+	    },
+	  fa:{
+		  type: Boolean,
+		  default: false
+	  }
   },
   data () {
 		return {
@@ -312,21 +316,37 @@ export default {
 .formater-pdf-viewer .toolbarButton.pageUp::before {
   content: "\2b06";
 }
-
+.formater-pdf-viewer .toolbarButton.pageUp.facontent::before {
+	font-family: "FontAwesome";
+  content:"\f062";
+}
 .formater-pdf-viewer .toolbarButton.pageDown::before {
  	content:"\2b07";
- /*font-family: "FontAwesome";
-  content:"\f063";*/
 }
-
+.formater-pdf-viewer .toolbarButton.pageDown.facontent::before{
+	font-family: "FontAwesome";
+  	content:"\f063";
+}
 .formater-pdf-viewer .toolbarButton.zoomOut::before {
     content:"\2501";
     font-size:16px;
+    left:7px;
+}
+.formater-pdf-viewer .toolbarButton.zoomOut.facontent::before {
+    font-family: "FontAwesome";
+  	content:"\f068";
+  	left:9px;
 }
 
 .formater-pdf-viewer .toolbarButton.zoomIn::before {
   content:"\2795";
   font-size:16px;
+  left:7px;
+}
+.formater-pdf-viewer .toolbarButton.zoomIn.facontent::before {
+    font-family: "FontAwesome";
+  	content:"\f067";
+  	left:9px;
 }
 
 .formater-pdf-viewer .toolbarButton.presentationMode::before{
@@ -337,6 +357,12 @@ export default {
   left:7px;
   
 }
+.formater-pdf-viewer .toolbarButton.presentationMode.facontent::before{
+  font-family: "FontAwesome";
+  content:"\f0b2";/*fa-arrows-alt*/
+  font-size:16px;
+  left:9px;
+}
 
 .formater-pdf-viewer .toolbarButton.print::before{
   content:"\2399";
@@ -344,13 +370,16 @@ export default {
   left:7px;
 }
 
-.formater-pdf-viewer .toolbarButton.openFile::before{
-  content:"\2b07";
+.formater-pdf-viewer .toolbarButton.print.facontent::before{
+ font-family: "FontAwesome";
+  content:"\f02f";
+  font-size:16px;
+  left:7px;
 }
 
 .toolbarButton.download::before {
   content:"\2b07";
-  font-size:1.2em;
+  font-size:20px;
 }
 
 .formater-pdf-viewer .toolbarField {
