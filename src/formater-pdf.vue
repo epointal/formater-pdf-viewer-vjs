@@ -9,8 +9,8 @@
 <script>
 "use strict";
 
-var PDFJS = require('pdfjs-dist/webpack.js');
-//var PDFJS = require('pdfjs-dist/build/pdf.js');
+//var PDFJS = require('pdfjs-dist/webpack.js');
+var PDFJS = require('pdfjs-dist/build/pdf.js');
 //var PdfjsWorker = require('worker-loader!./build/pdf.worker.js');
 
 /*if (typeof window !== 'undefined' && 'Worker' in window) {
