@@ -8,10 +8,7 @@ var apiHost = "https://rawgit.com/epointal/formater-pdf-viewer-vjs/master";
 var preUrl = PACKAGE.preproduction.url + buildName + "/master/dist0/";
 var prodUrl = PACKAGE.production.url + buildName + "/" + buildVersion + "/dist/";
 
-var pathsToClean = [
-  'dist/*.*',
-  'dist0/*.*'
-]
+
 
 module.exports = {
   entry: './src/main.js',
@@ -76,7 +73,7 @@ if (process.env.NODE_ENV === 'production') {
         NODE_ENV: '"production"'
       }
     }),
-    new CleanWebpackPlugin(pathsToClean),
+    new CleanWebpackPlugin(["/dist/*.*"]),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
       compress: {
@@ -102,7 +99,7 @@ if (process.env.NODE_ENV === 'preproduction') {
         NODE_ENV: '"production"'
       }
     }),
-    new CleanWebpackPlugin(pathsToClean),
+    new CleanWebpackPlugin(["/dist0/*.*"]),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
       compress: {
