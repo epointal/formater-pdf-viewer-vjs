@@ -24,14 +24,14 @@ npm run build
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 ## Configuration
-Use your own repository by editing package.json in particular name, version, main, preproduction.url and production.url used to build js files:
+Use your own repository by editing package.json in particular `name`, `version`, `main`, `preproduction.url` and `production.url` used to build js files:
 
 ``` json
   "name": "formater-pdf-viewer-vjs",
   "version": "0.1.2",
   "main": "src/formater-pdf-viewer.vue",
   "preproduction": {
-	"url": "https://rawgit.com/epointal/"
+	  "url": "https://rawgit.com/epointal/"
   },
   "production": {
      "url": "https://cdn.rawgit.com/epointal/"
