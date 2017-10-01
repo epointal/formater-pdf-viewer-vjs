@@ -65,11 +65,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map';
-<<<<<<< HEAD
   module.exports.output.publicPath = "https://rawgit.com/epointal/formater-pdf-viewer-vjs/master/dist/";
-=======
   //module.exports.output.publicPath= PACKAGE.url+ buildName +'/master/dist/';
->>>>>>> 3d23bca0764ee7bca4358f3c994e47e676285885
+
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
