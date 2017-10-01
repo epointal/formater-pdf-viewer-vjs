@@ -10,7 +10,8 @@
 "use strict";
 
 var PDFJS = require('pdfjs-dist/webpack.js');
-//var PDFJS = require('pdfjs-dist/build/pdf.js');
+//
+var PDFJS = require('pdfjs-dist/build/pdf.js');
 //var PdfjsWorker = require('worker-loader!./build/pdf.worker.js');
 
 /*if (typeof window !== 'undefined' && 'Worker' in window) {
@@ -28,9 +29,8 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 	var pdfDoc = null;
 	var pdfPage = null;
 	var pdfRender = null;
-    var center = null;
-    var width = null;
-    var height = null;
+    this.w = 0;
+    this.h = 0;
     
 	function clearCanvas() {
 		
@@ -187,37 +187,18 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		
 		var viewport = pdfPage.getViewport(canvasElt.offsetWidth / pdfPage.getViewport(1).width, rotate);
 
-		emitEvent('pageSize', viewport.width, viewport.height);
+		//emitEvent('pageSize', viewport.width, viewport.height);
 		
 		var ctx = canvasElt.getContext('2d');
 		//ctx.save();
 		canvasElt.width = viewport.width;
 		canvasElt.height = viewport.height;
 		
-		//if(center === null){
-		    center = {
-		          x: canvasElt.width/2 -tx/scale,
-		          y: canvasElt.height/2 -ty/scale
-		    }
-		//}
-		
-		
-		//ctx.setTransform(1, 0, 0, 1, 0, 0);
+		this.w = canvasElt.width/2;
+		this.h = canvasElt.height/2;
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
 		ctx.translate(tx , ty );
-		//ctx.translate(tx + (1-scale)* center.x , ty + (1-scale) * center.y);
 		ctx.scale(scale, scale);
-		ctx.translate( (1-scale)* center.x/(scale) , (1-scale)* center.y/(scale));
-		//ctx.translate(center.x/scale , center.y/scale );
-		
-		var alpha = (canvasElt.width * scale)/(2-2*scale);
-		console.log( (1-scale)*center.x/scale);
-		console.log(alpha);
-		//keep the center for the next step
-		center = {
-		        x: canvasElt.width/(2*scale) - tx,
-		        y: canvasElt.height/(2*scale) - ty
-		}
-		
 		pdfRender = pdfPage.render({
 			canvasContext: canvasElt.getContext('2d'),
 			viewport: viewport
@@ -359,6 +340,7 @@ module.exports = {
 		    type: Number,
 		    default: 1
 		},
+		
 		password: {
 			type: Function,
 			default: null,
@@ -376,7 +358,8 @@ module.exports = {
 	    	mouseupListener: null,
 	    	mousePosition: null,
 	    	tx: 0,
-	    	ty: 0
+	    	ty: 0,
+	    	scale0:1
 	    }
 	},
 	watch: {
@@ -391,7 +374,12 @@ module.exports = {
 		    if(this.scale==1){
 		        this.tx = 0;
 		        this.ty = 0;
+		    }else{
+			    //compute tx and ty
+			    this.tx += (1- this.scale/this.scale0)*(this.pdf.w-this.tx);
+			    this.ty += (1- this.scale/this.scale0)*(this.pdf.h- this.ty);
 		    }
+		    this.scale0 = this.scale;
 		    this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
 		   // this.pdf.change(this.rotate, this.scale, this.tx, this.ty);
 		},
