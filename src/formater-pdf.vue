@@ -9,8 +9,8 @@
 <script>
 "use strict";
 
-//var PDFJS = require('pdfjs-dist/webpack.js');
-var PDFJS = require('pdfjs-dist/build/pdf.js');
+var PDFJS = require('pdfjs-dist/webpack.js');
+//var PDFJS = require('pdfjs-dist/build/pdf.js');
 //var PdfjsWorker = require('worker-loader!./build/pdf.worker.js');
 
 /*if (typeof window !== 'undefined' && 'Worker' in window) {
@@ -20,7 +20,7 @@ var PDFJS = require('pdfjs-dist/build/pdf.js');
 }
 
 module.exports = pdfjs;*/
-PDFJS.PDFJS.disableWorker = true;
+//PDFJS.PDFJS.disableWorker = true;
 //var resizeSensor = require('vue-resize-sensor');
 //var resizeSensor = new VueResizeSensor(); 
 function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
@@ -29,6 +29,8 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 	var pdfPage = null;
 	var pdfRender = null;
     var center = null;
+    var width = null;
+    var height = null;
     
 	function clearCanvas() {
 		
@@ -188,28 +190,32 @@ function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
 		emitEvent('pageSize', viewport.width, viewport.height);
 		
 		var ctx = canvasElt.getContext('2d');
-		ctx.save();
+		//ctx.save();
 		canvasElt.width = viewport.width;
 		canvasElt.height = viewport.height;
-		this.width = canvasElt.width;
-		this.height = canvasElt.height;
-		if(this.center === null){
-		    this.center = {
-		          x: this.width/2,
-		          y: this.height/2
+		
+		//if(center === null){
+		    center = {
+		          x: canvasElt.width/2 -tx/scale,
+		          y: canvasElt.height/2 -ty/scale
 		    }
-		}
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.translate(tx, ty);
+		//}
+		
+		
+		//ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.translate(tx , ty );
+		//ctx.translate(tx + (1-scale)* center.x , ty + (1-scale) * center.y);
 		ctx.scale(scale, scale);
-		///ctx.translate( (1-scale)*(tx+canvasElt.width/2)/scale,(1-scale)*(ty+canvasElt.height/2)/scale);
+		ctx.translate( (1-scale)* center.x/(scale) , (1-scale)* center.y/(scale));
+		//ctx.translate(center.x/scale , center.y/scale );
 		
-		//ctx.translate( (1-scale)*canvasElt.width/(2*scale),(1-scale)*canvasElt.height/(2*scale));
-		ctx.translate( (1-scale)*canvasElt.width/(2*scale),(1-scale)*canvasElt.height/(2*scale));
-		
-		this.center = {
-		        x: this.width/(2*scale) - tx,
-		        y: this.height/(2*scale)- ty
+		var alpha = (canvasElt.width * scale)/(2-2*scale);
+		console.log( (1-scale)*center.x/scale);
+		console.log(alpha);
+		//keep the center for the next step
+		center = {
+		        x: canvasElt.width/(2*scale) - tx,
+		        y: canvasElt.height/(2*scale) - ty
 		}
 		
 		pdfRender = pdfPage.render({
@@ -387,6 +393,7 @@ module.exports = {
 		        this.ty = 0;
 		    }
 		    this.pdf.renderPage(this.rotate, this.scale, this.tx, this.ty);
+		   // this.pdf.change(this.rotate, this.scale, this.tx, this.ty);
 		},
 		triggerprint: function(){
 		    this.print();

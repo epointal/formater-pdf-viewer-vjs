@@ -4,6 +4,8 @@ var PACKAGE = require('./package.json');
 var buildVersion = PACKAGE.version;
 var buildName = PACKAGE.name;
 var CleanWebpackPlugin = require('clean-webpack-plugin')
+var apiHost = "https://rawgit.com/epointal/formater-pdf-viewer-vjs/master";
+
 
 var pathsToClean = [
   'dist/*.*'
@@ -14,6 +16,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
+   // assetsPublicPath: '',
     filename: buildName+'_'+buildVersion+'.js'
   },
   module: {
@@ -50,7 +53,7 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true
+    noInfo: false
   },
   performance: {
     hints: false
@@ -62,12 +65,17 @@ if (process.env.NODE_ENV === 'development') {
 }
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map';
+<<<<<<< HEAD
   module.exports.output.publicPath = "https://rawgit.com/epointal/formater-pdf-viewer-vjs/master/dist/";
+=======
+  //module.exports.output.publicPath= PACKAGE.url+ buildName +'/master/dist/';
+>>>>>>> 3d23bca0764ee7bca4358f3c994e47e676285885
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: '"production"'
+        NODE_ENV: '"production"',
+        __API__: apiHost
       }
     }),
     new CleanWebpackPlugin(pathsToClean),
