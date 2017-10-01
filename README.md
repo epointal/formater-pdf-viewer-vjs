@@ -45,5 +45,5 @@ Use your own repository by editing package.json in particular `name`, `version`,
 ```
 
   <formater-pdf-viewer src="url/file.pdf" lang="fr" ></formater-pdf-viewer>
-  <script src="https://cdn.rawgit.com/epointal/formater-pdf-viewer-vjs/0.1.2/dist/formater-pdf-viewer-vjs_0.1.2.js"></script> 
+  <script src="https://cdn.rawgit.com/epointal/formater-pdf-viewer-vjs/0.1.3/dist/formater-pdf-viewer-vjs_0.1.3.js"></script> 
 

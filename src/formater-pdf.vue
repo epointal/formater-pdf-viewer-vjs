@@ -21,7 +21,7 @@ var PDFJS = require('pdfjs-dist/build/pdf.js');
 }
 
 module.exports = pdfjs;*/
-//PDFJS.PDFJS.disableWorker = true;
+PDFJS.PDFJS.disableWorker = true;
 //var resizeSensor = require('vue-resize-sensor');
 //var resizeSensor = new VueResizeSensor(); 
 function PDFJSWrapper(PDFJS, canvasElt, annotationLayerElt, emitEvent) {
