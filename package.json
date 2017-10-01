@@ -3,6 +3,9 @@
   "version": "0.1.1",
   "description": "Webcomponent pdf viewer use vuejs",
   "main": "src/formater-pdf-viewer.vue",
+  "assets": {
+	"url": "https://rawgit.com/epointal/formater-pdf-viewer-vjs/master/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/epointal/formater-pdf-viewer-vjs.git"
@@ -10,8 +13,7 @@
   "keywords": [
     "vue.js",
     "pdf",
-    "viewer",
-    "FranckFreiburger"
+    "viewer"
   ],
   "private": false,
   "author": "epointal",
