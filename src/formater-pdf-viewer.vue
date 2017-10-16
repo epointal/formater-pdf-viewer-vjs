@@ -70,7 +70,7 @@
           </div>
         </div>
 		<div style="top:0;left:0;width:100%;">
-		<formater-pdf  ref="pdf" class="formater-vue-pdf" :src="src" :page="page"  :scale="scale"  :triggerPrint="print" @progress="progress" @error="error" @numPages="recordNumPages"></formater-pdf>
+		<formater-pdf  ref="pdf" class="formater-vue-pdf" :src="src" :page="page"  :scale="scale" :rotate="rotate" :triggerPrint="print" @progress="progress" @error="error" @numPages="recordNumPages"></formater-pdf>
 		</div>
 	</div>
 </template>
@@ -90,6 +90,10 @@ export default {
 	  fa:{
 		  type: Boolean,
 		  default: false
+	  },
+	  rotate:{
+	      type: Number,
+	      default:0
 	  }
   },
   data () {
