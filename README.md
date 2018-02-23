@@ -1,6 +1,6 @@
 # formater-pdf-viewer-vjs
 
-This repository has been moved to [Terresolide/formater-pdf-viewer](https://github.com/terresolide/formater-pdf-viewer-vjs)
+This repository has been moved to [Terresolide/formater-pdf-viewer](https://github.com/terresolide/formater-pdf-viewer-vjs)    
 Also look at its [wiki](https://github.com/terresolide/formater-pdf-viewer-vjs/wiki) for  use
 
 Used work from [FranckFreiburger](https://github.com/FranckFreiburger/vue-pdf)
